@@ -5,10 +5,16 @@ import { AppDispatch } from "../../store";
 import { listObjetos } from "../../store/objeto/actions/listObjetos";
 import { initObjetoState } from "../../store/objeto";
 import { selectListObjetos } from "../../store/objeto/selectors/SelectListObjetos";
+import { FormComentario } from "../../components/inventary/formComentario";
+import { selectUser } from "../../store/users/selectors/SelectUser";
 
 export const Inventary: React.FC = () => {
 
     const dispatch = useDispatch<AppDispatch>();
+
+    const usuario = useSelector(selectUser);
+
+    const usuarioId = usuario?.id;
 
     useEffect(() => {
         dispatch(initObjetoState());
@@ -62,19 +68,7 @@ export const Inventary: React.FC = () => {
                                                             <IonLabel>Comentarios</IonLabel>
                                                         </IonItem>
                                                         <div className="ion-padding" slot="content">
-                                                            <IonRow>
-                                                                <IonCol size="10">
-                                                                    <IonCard>
-                                                                        <IonItem lines="none">
-                                                                            <IonLabel position="floating">Comentar</IonLabel>
-                                                                            <IonInput placeholder="Ingresa comentario"></IonInput>
-                                                                        </IonItem>
-                                                                    </IonCard>
-                                                                </IonCol>
-                                                                <IonCol class="ion-align-self-center" size="2">
-                                                                    <IonButton style={{ height: 30 }} color="primary">Comentar</IonButton>
-                                                                </IonCol>
-                                                            </IonRow>
+                                                            <FormComentario idObjeto={objeto.id} idUsuario={usuarioId} />
                                                             {objeto.comentarios.map((comentario:any, index:any) => (
                                                                 <IonList key={index}>
                                                                     <IonItem lines="none">
