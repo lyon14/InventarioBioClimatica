@@ -1,5 +1,5 @@
 import { IonAccordion, IonAccordionGroup, IonButton, IonButtons, IonCard, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonMenuButton, IonPage, IonRow, IonText, IonTitle, IonToolbar } from "@ionic/react"
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../store";
 import { listObjetos } from "../../store/objeto/actions/listObjetos";
@@ -7,6 +7,7 @@ import { initObjetoState } from "../../store/objeto";
 import { selectListObjetos } from "../../store/objeto/selectors/SelectListObjetos";
 import { FormComentario } from "../../components/inventary/formComentario";
 import { selectUser } from "../../store/users/selectors/SelectUser";
+
 
 export const Inventary: React.FC = () => {
 
@@ -22,6 +23,16 @@ export const Inventary: React.FC = () => {
     }, [dispatch]);
 
     const ListaObjetos = useSelector(selectListObjetos);
+
+    const [results, setResults]= useState(ListaObjetos);
+
+    const handleSearch = (e: any) => {
+        const query = e.target.value.toLowerCase();
+        const filtered = ListaObjetos?.filter((item: any) => {
+            return item.nombre.toLowerCase().includes(query);
+        });
+        setResults(filtered);
+    };
 
     return (
         <IonPage id="main-content">
@@ -41,13 +52,13 @@ export const Inventary: React.FC = () => {
                                 <IonCard style={{ borderRadius: 10 }}>
                                     <IonItem>
                                         <IonLabel position="floating">Buscar</IonLabel>
-                                        <IonInput></IonInput>
+                                        <IonInput debounce={500} onIonChange={(ev) => handleSearch(ev)} type="text" placeholder="Martillo" color="tertiary" />
                                     </IonItem>
                                 </IonCard>
                             </IonCol>
                         </IonRow>
                         <IonList>
-                            {ListaObjetos?.map((objeto, index) => (
+                            {results?.map((objeto, index) => (
                                 <IonItem lines="none" key={index}>
                                     <IonCard style={{ width: "100%" }} class="ion-padding">
                                         <IonRow class="ion-margin-bottom">
