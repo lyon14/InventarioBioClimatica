@@ -1,4 +1,5 @@
 import { IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonContent, IonGrid, IonCard, IonCol, IonInput, IonItem, IonLabel, IonRow, IonButton, IonText } from "@ionic/react"
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form"
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store";
@@ -8,6 +9,8 @@ export const AddObjeto: React.FC = () => {
 
     const dispatch = useDispatch<AppDispatch>();
     
+    const [base64Image, setBase64Image] = useState('');
+
     const {
         register,
         handleSubmit,
@@ -20,8 +23,30 @@ export const AddObjeto: React.FC = () => {
         },
     });
 
+    // Agregamos un manejador para el evento de carga de archivos
+    const handleFileChange = (event: any) => {
+        // Obtenemos el archivo seleccionado
+        const file = event.target.files[0];
+
+        // Verificamos que el archivo sea una imagen
+        if (file.type.startsWith('image/')) {
+            // Creamos un objeto FileReader para leer el contenido del archivo
+            const reader = new FileReader();
+
+            // Asignamos una función al evento onload del FileReader
+            reader.onload = () => {
+                // Al cargar el archivo, obtenemos el resultado como base64 y lo guardamos en el estado
+                setBase64Image(reader.result as string);
+            };
+
+            // Iniciamos la lectura del archivo
+            reader.readAsDataURL(file);
+        }
+    };
+
     const onSubmit = async (data: any) => {
         try {
+            data.imagen = base64Image;
             console.log(data);
             dispatch(addObjeto(data));
         } catch (error) {
@@ -80,6 +105,15 @@ export const AddObjeto: React.FC = () => {
                                                 )}
                                             />
                                             
+                                        </IonItem>
+                                    </IonCard>
+                                    <IonCard style={{ borderRadius: 10 }}>
+                                        <IonItem>
+                                        <input 
+                                            type="file" 
+                                            accept="image/*" 
+                                            onChange={handleFileChange}
+                                        />
                                         </IonItem>
                                     </IonCard>
                                     <IonRow class="ion-justify-content-center">

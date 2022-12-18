@@ -28,6 +28,7 @@ const objetoSlice = createSlice({
                 state.ListObjetos = [];
                 state.ObjetosStatus = "";
                 state.AddObjetoStatus = "";
+                state.AddComentarioStatus = "";
             })
             .addCase(listObjetos.pending, (state) => {
                 state.ObjetosStatus = "pending";

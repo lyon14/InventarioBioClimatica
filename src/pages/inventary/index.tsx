@@ -63,6 +63,9 @@ export const Inventary: React.FC = () => {
                                     <IonCard style={{ width: "100%" }} class="ion-padding">
                                         <IonRow class="ion-margin-bottom">
                                             <IonCol size="auto">
+                                                <IonImg style={{ width: 120, height: 120 }} src={objeto.imagen} />
+                                            </IonCol>
+                                            <IonCol size="auto">
                                                 <IonRow>
                                                     <IonText style={{ fontSize: 20, fontWeight: 600 }} color="dark">{objeto.nombre}</IonText>
                                                 </IonRow>
