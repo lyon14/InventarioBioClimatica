@@ -1,4 +1,4 @@
-import { IonAccordion, IonAccordionGroup, IonButton, IonButtons, IonCard, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonMenuButton, IonPage, IonRow, IonText, IonTitle, IonToolbar } from "@ionic/react"
+import { IonAccordion, IonAccordionGroup, IonButton, IonButtons, IonCard, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonLoading, IonMenuButton, IonPage, IonRow, IonText, IonTitle, IonToolbar } from "@ionic/react"
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../store";
@@ -7,7 +7,8 @@ import { initObjetoState } from "../../store/objeto";
 import { selectListObjetos } from "../../store/objeto/selectors/SelectListObjetos";
 import { FormComentario } from "../../components/inventary/formComentario";
 import { selectUser } from "../../store/users/selectors/SelectUser";
-
+import { reloadOutline } from "ionicons/icons";
+import { SelectStatusList } from "../../store/objeto/selectors/SelectStatusListObjetos";
 
 export const Inventary: React.FC = () => {
 
@@ -16,6 +17,8 @@ export const Inventary: React.FC = () => {
     const usuario = useSelector(selectUser);
 
     const usuarioId = usuario?.id;
+
+    const loadingAct = useSelector(SelectStatusList);
 
     useEffect(() => {
         dispatch(initObjetoState());
@@ -33,6 +36,12 @@ export const Inventary: React.FC = () => {
         });
         setResults(filtered);
     };
+
+    const handleReload = () => {
+        dispatch(initObjetoState());
+        dispatch(listObjetos());
+        setResults(ListaObjetos);
+    }
 
     return (
         <IonPage id="main-content">
@@ -56,16 +65,22 @@ export const Inventary: React.FC = () => {
                                     </IonItem>
                                 </IonCard>
                             </IonCol>
+                            <IonCol size="auto" class="ion-align-self-center">
+                                    <IonButton onClick={handleReload}>
+                                        <IonIcon icon={reloadOutline} />
+                                    </IonButton>
+                                    <IonLoading isOpen={loadingAct === "pending"} message={"Cargando Inventario..."} />
+                            </IonCol>
                         </IonRow>
                         <IonList>
                             {results?.map((objeto, index) => (
                                 <IonItem lines="none" key={index}>
                                     <IonCard style={{ width: "100%" }} class="ion-padding">
                                         <IonRow class="ion-margin-bottom">
-                                            <IonCol size="auto">
-                                                <IonImg style={{ width: 120, height: 120 }} src={objeto.imagen} />
+                                            <IonCol size="1">
+                                                <IonImg style={{ width: 100, height: 100 }} src={objeto.imagen} />
                                             </IonCol>
-                                            <IonCol size="auto">
+                                            <IonCol size="10" style={{marginLeft:5}}>
                                                 <IonRow>
                                                     <IonText style={{ fontSize: 20, fontWeight: 600 }} color="dark">{objeto.nombre}</IonText>
                                                 </IonRow>

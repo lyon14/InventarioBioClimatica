@@ -1,15 +1,17 @@
-import { IonButton, IonCard, IonCol, IonInput, IonItem, IonLabel, IonRow } from "@ionic/react"
+import { IonButton, IonCard, IonCol, IonInput, IonItem, IonLabel, IonLoading, IonRow } from "@ionic/react"
 import { Controller, useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { comentario } from "../../@types/comentario";
 import { AppDispatch } from "../../store";
 import { addComentarioxObjeto } from "../../store/objeto/actions/addComentarioxObjeto";
-
+import { SelectStatusComentarioAdd } from "../../store/objeto/selectors/SelectStatusComentarioAdd";
 
 export const FormComentario = (props: any) => {
 
     const dispatch = useDispatch<AppDispatch>();
     
+    const loading = useSelector(SelectStatusComentarioAdd);
+
     const {
         register,
         handleSubmit,
@@ -64,6 +66,7 @@ export const FormComentario = (props: any) => {
                     <IonButton style={{ height: 30 }} type="submit" color="primary">Comentar</IonButton>
                 </IonCol>
             </IonRow>
+            <IonLoading isOpen={loading === "pending"} message={"Creando Comentario..."} />
         </form>
         
     )

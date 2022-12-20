@@ -1,13 +1,16 @@
-import { IonButton, IonButtons, IonContent, IonFooter, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonMenu, IonMenuButton, IonMenuToggle, IonPage, IonTitle, IonToolbar } from "@ionic/react";
+import { IonButton, IonButtons, IonContent, IonFooter, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonLoading, IonMenu, IonMenuButton, IonMenuToggle, IonPage, IonTitle, IonToolbar } from "@ionic/react";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../store";
 import { logout } from "../../store/users/actions/logout";
 import { selectListPages } from "../../store/users/selectors/SelectListPages";
+import { SelectStatusLogout } from "../../store/users/selectors/SelectStatusLogout";
 
 export const Menu: React.FC = () => {
 
     const dispatch = useDispatch<AppDispatch>();
+
+    const logoutAct = useSelector(SelectStatusLogout);
 
     const Pages = useSelector(selectListPages)
 
@@ -44,6 +47,7 @@ export const Menu: React.FC = () => {
                 <IonFooter>
                     <IonToolbar>
                         <IonButton onClick={() => onLogout()} color="danger" expand="full" type="submit" style={{ paddingLeft: 10, paddingRight: 10 }}>Logout</IonButton>
+                        <IonLoading isOpen={logoutAct === "pending"} message={"Saliendo..."} />
                     </IonToolbar>
                 </IonFooter>
             </IonMenu>

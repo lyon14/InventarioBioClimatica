@@ -1,14 +1,17 @@
-import { IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonContent, IonGrid, IonCard, IonCol, IonInput, IonItem, IonLabel, IonRow, IonButton, IonText } from "@ionic/react"
+import { IonPage, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonContent, IonGrid, IonCard, IonCol, IonInput, IonItem, IonLabel, IonRow, IonButton, IonText, IonLoading } from "@ionic/react"
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form"
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../store";
 import { addObjeto } from "../../store/objeto/actions/addObjeto";
+import { SelectStatusAddObjeto } from "../../store/objeto/selectors/SelectStatusAddObjeto";
 
 export const AddObjeto: React.FC = () => {
 
     const dispatch = useDispatch<AppDispatch>();
-    
+
+    const loading = useSelector(SelectStatusAddObjeto);
+
     const [base64Image, setBase64Image] = useState('');
 
     const {
@@ -119,6 +122,7 @@ export const AddObjeto: React.FC = () => {
                                     <IonRow class="ion-justify-content-center">
                                         <IonButton color="primary" type="submit">Subir Objeto</IonButton>
                                     </IonRow>
+                                    <IonLoading isOpen={loading === "pending"} message={"Creando Objeto..."} />
                                 </form>
                             </IonCol>
                         </IonRow>

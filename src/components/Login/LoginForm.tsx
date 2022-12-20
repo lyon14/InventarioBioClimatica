@@ -1,16 +1,19 @@
-import { IonButton, IonCard, IonCardHeader, IonCardTitle, IonCol, IonContent, IonGrid, IonInput, IonItem, IonLabel, IonRow } from "@ionic/react";
+import { IonButton, IonCard, IonCardHeader, IonCardTitle, IonCol, IonContent, IonGrid, IonInput, IonItem, IonLabel, IonLoading, IonRow } from "@ionic/react";
 import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../store";
 import { InputErrorMessage } from "../errors/InputErrorMessage";
 import { login } from "../../store/users/actions/login";
 import { initState } from "../../store/users";
+import { SelectStatusLogin } from "../../store/users/selectors/SelectStatusLogin";
 
 export const LoginForm: React.FC = () => {
 
     const dispatch = useDispatch<AppDispatch>();
     
+    const loading = useSelector(SelectStatusLogin);
+
     const {
         register,
         handleSubmit,
@@ -97,6 +100,7 @@ export const LoginForm: React.FC = () => {
                                 <IonRow class="ion-justify-content-center ion-margin">
                                     <IonButton color="primary" type="submit">Ingresar</IonButton>
                                 </IonRow>
+                                <IonLoading isOpen={loading === "pending"} message={"Creando Comentario..."} />
                             </form>
                             <IonRow class="ion-justify-content-center ion-align-items-center">
                                 <IonLabel>¿No tienes cuenta?</IonLabel>
